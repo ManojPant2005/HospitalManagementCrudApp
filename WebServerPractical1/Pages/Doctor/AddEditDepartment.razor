@@ -1,0 +1,59 @@
+﻿@page "/department/add"
+
+
+@inject IDepartmentRepository DepartmentService
+@inject NavigationManager Navigation
+
+<h3>Department Add/Edit</h3>
+<EditForm Model="Department" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="col-6">
+        <div class="row">
+            <label for="Name">Name</label>
+            <InputText @bind-Value="@Department.Name" />
+            <ValidationMessage For="(()=>Department.Name)" />
+        </div>
+        <div class="row">
+            <label for="Description">Description</label>
+            <InputTextArea @bind-Value="@Department.Description" />
+        </div>
+        <br />
+        <div class="row">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int DepartmentId { get; set; }
+
+    public Department Department { get; set; } = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (DepartmentId > 0 && Department?.Id == 0)
+        {
+            Department = await DepartmentService.GetAsync(DepartmentId);
+        }
+    }
+
+    private async Task OnValidSubmit()
+    {
+        if (Department.Id > 0)
+        {
+            //Update
+            var result = await DepartmentService.UpdateAsync(Department);
+        }
+        else
+        {
+            //Insert
+            Department = await DepartmentService.AddAsync(Department);
+        }
+
+        //redirect back to list
+        Navigation.NavigateTo("/departments");
+    }
+}

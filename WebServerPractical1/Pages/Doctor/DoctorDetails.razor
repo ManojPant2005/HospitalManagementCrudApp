@@ -1,0 +1,84 @@
+﻿@page "/doctor/{DoctorId:int}"
+
+@inject IDoctorRepository DoctorService
+@inject IDepartmentRepository DepartmentService
+@inject NavigationManager Navigation
+
+<h3>Employee Details</h3>
+
+<div class="col-md-7">
+    <div class="profile-head">
+        <dl class="row" style="padding-left: 10px;">
+            <dt class="col-sm-3">
+                Department
+            </dt>
+            <dd class="col-sm-9">
+                @department.Name
+            </dd>
+            <dt class="col-sm-3">
+                First Name
+            </dt>
+            <dd class="col-sm-9">
+                @Doctor.FirstName
+            </dd>
+            <dt class="col-sm-3">
+                Last Name
+            </dt>
+            <dd class="col-sm-9">
+                @Doctor.LastName
+            </dd>
+            <dt class="col-sm-3">
+                Email
+            </dt>
+            <dd class="col-sm-9">
+                @Doctor.Email
+            </dd>
+            <dt class="col-sm-3">
+                Phone
+            </dt>
+            <dd class="col-sm-9">
+                @Doctor.Phone
+            </dd>
+            <dt class="col-sm-3">
+                Salary
+            </dt>
+            <dd class="col-sm-9">
+                @Doctor.Salary.ToString()
+            </dd>
+            <dt class="col-sm-3">
+                Bio
+            </dt>
+            <dd class="col-sm-9">
+                @Doctor.Bio
+            </dd>
+            <dt class="col-sm-3">
+                Photo
+            </dt>
+            <dd class="col-sm-9">
+                <img src="@Doctor.PhotoUrl" height="100" width="100" />
+            </dd>
+        </dl>
+    </div>
+</div>
+<div>
+    <a href="/doctors" class="btn btn-light">Back to Details</a>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public Doctor Doctor { get; set; } = new();
+
+    private Department department = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id > 0 && Doctor?.DoctorID == 0)
+        {
+            Doctor = await DoctorService.GetAsync(Id);
+
+            department = await DepartmentService.GetAsync(Doctor.DepartmentId);
+        }
+    }
+}

@@ -1,0 +1,68 @@
+﻿@page "/departments"
+
+@inject IDepartmentRepository DepartmentService
+@inject NavigationManager Navigation
+
+<h3>List of Departments</h3>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (departments != null && departments.Any())
+            {
+                foreach (Department department in departments)
+                {
+                    <tr>
+                        <td>@department.Id</td>
+                        <td>@department.Name</td>
+                        <td>@department.Description</td>
+                        <td>
+                            @*<a href="/department/edit/@department.Id">Edit</a>*@
+                            <button type="button" @onclick=@(()=>Navigation.NavigateTo($"/department/edit/{@department.Id}"))>Edit</button>
+                            <button type="button" @onclick=@(()=>Navigation.NavigateTo($"/department/{@department.Id}"))>Detail</button>
+                            <button type="button" @onclick=@(()=>Delete(department.Id))>Delete</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<hr />
+<div>
+    <p>@_actionStatus</p>
+</div>
+<div>
+    <a href="/department/add" class="btn btn-primary">Add New</a>
+</div>
+@code {
+    private IEnumerable<Department> departments;
+
+    private string _actionStatus = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        departments = await DepartmentService.GetAllAsync();
+    }
+
+    async Task Delete(int id)
+    {
+        if (await DepartmentService.DeleteAsync(id))
+        {
+            _actionStatus = "Deleted!";
+        }
+        else
+        {
+            _actionStatus = "Something went wrong!";
+        }
+
+        StateHasChanged();
+    }
+}

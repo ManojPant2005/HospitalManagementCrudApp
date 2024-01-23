@@ -1,0 +1,49 @@
+﻿@page "/department/{departmentId:int}"
+
+@inject IDoctorRepository DoctorService
+@inject IDepartmentRepository DepartmentService
+@inject NavigationManager Navigation
+
+<h3>Department Details</h3>
+
+<div class="col-md-7">
+    <div class="profile-head">
+        <dl class="row" style="padding-left: 10px;">
+            <dt class="col-sm-3">
+                Name
+            </dt>
+            <dd class="col-sm-9">
+                @department.Name
+            </dd>
+            <dt class="col-sm-3">
+                Description
+            </dt>
+            <dd class="col-sm-9">
+                @department.Description
+            </dd>
+        </dl>
+    </div>
+</div>
+<hr />
+<div>
+    <Doctors doctor=@doctor CallAsComponent="true" />
+</div>
+<div>
+    <a href="/departments" class="btn btn-light">Back to Details</a>
+</div>
+
+@code {
+    [Parameter]
+    public int DepartmentId { get; set; }
+
+    private Department department = new();
+    private IEnumerable<Doctor> doctor;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        department = await DepartmentService.GetAsync(DepartmentId);
+        doctor = await DoctorService.GetAllAsync(DepartmentId);
+
+        StateHasChanged();
+    }
+}

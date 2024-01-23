@@ -1,0 +1,99 @@
+﻿@page "/doctors"
+
+@using WebServerPractical1.Data.Entities
+@using WebServerPractical1.Data.Services.Contracts
+
+@inject IDoctorRepository DoctorService
+@inject NavigationManager Navigation
+
+<h3>List of Doctor</h3>
+@if (doctor is null)
+{
+    <h2>Loading..</h2>
+}
+else
+{
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Salary</th>
+                    <th>Department</th>
+                    <th>Picture</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (doctor != null && doctor.Any())
+                {
+                    foreach (Doctor dc in doctor)
+                    {
+                        <tr>
+                            <td>@dc.DoctorID</td>
+                            <td>@dc.FirstName</td>
+                            <td>@dc.LastName</td>
+                            <td>@dc.Email</td>
+                            <td>@dc.Phone</td>
+                            <td>@dc.Salary.ToString()</td>
+                            <td>@dc.Department.Name</td>
+                            <td><img src="@dc.PhotoUrl" height="100" width="100" /></td>
+                            <td>
+                                @*<a href="/department/edit/@department.Id">Edit</a>*@
+                                <button type="button" @onclick=@(()=>Navigation.NavigateTo($"/doctor/edit/{dc.DoctorID}"))>Edit</button>
+                                <button type="button" @onclick=@(()=>Navigation.NavigateTo($"/doctor/{@dc.DoctorID}"))>Detail</button>
+                                <button type="button" @onclick=@(()=>Delete(dc.DoctorID))>Delete</button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <hr />
+    <div>
+        <p>@_actionStatus</p>
+    </div>
+    @if (!CallAsComponent)
+    {
+        <div>
+            <a href="/adddoctor" class="btn btn-primary">Add New</a>
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<Doctor> doctor { get; set; }
+
+    [Parameter]
+    public bool CallAsComponent { get; set; }
+
+    private string _actionStatus = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if ((doctor == null || !doctor.Any()) && !CallAsComponent)
+        {
+            doctor = await DoctorService.GetAllAsync();
+        }
+    }
+
+    async Task Delete(int id)
+    {
+        if (await DoctorService.DeleteAsync(id))
+        {
+            _actionStatus = "Deleted!";
+        }
+        else
+        {
+            _actionStatus = "Something went wrong!";
+        }
+
+        StateHasChanged();
+    }
+}
