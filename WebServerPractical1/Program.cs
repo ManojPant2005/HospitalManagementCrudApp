@@ -1,9 +1,7 @@
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Blazor;
 using WebServerPractical1.Areas.Identity;
 using WebServerPractical1.Data;
 using WebServerPractical1.Data.Services.Contracts;
@@ -22,8 +20,14 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
+builder.Services.AddSyncfusionBlazor();
+
 builder.Services.AddScoped(typeof(IDoctorRepository), typeof(DoctorRepository));
 builder.Services.AddScoped(typeof(IDepartmentRepository), typeof(DepartmentRepository));
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NAaF5cWWRCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWX5cdHRUR2ZcWENzV0A=");
 
 var app = builder.Build();
 

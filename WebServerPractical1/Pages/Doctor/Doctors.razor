@@ -1,12 +1,8 @@
 ﻿@page "/doctors"
 
-@using WebServerPractical1.Data.Entities
-@using WebServerPractical1.Data.Services.Contracts
-
 @inject IDoctorRepository DoctorService
 @inject NavigationManager Navigation
 
-<h3>List of Doctor</h3>
 @if (doctor is null)
 {
     <h2>Loading..</h2>

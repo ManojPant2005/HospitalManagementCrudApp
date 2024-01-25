@@ -13,6 +13,17 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.14" />
+    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Charts" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Core" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Diagram" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Grid" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Layouts" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Navigations" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Schedule" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Spinner" Version="24.1.47" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="24.1.47" />
   </ItemGroup>
 
   <ItemGroup>
